@@ -1,7 +1,9 @@
 extern crate rand;
 
 use std::io;
+use std::cmp::Ordering;
 use rand::Rng;
+
 
 fn main() {
     println!("!!!! GUESS KARO GAME !!!!");
@@ -22,11 +24,29 @@ fn main() {
     io::stdin().read_line(&mut guess)
         .expect("Uh-oh! Are you sure you entered the right kind of value?");
 
+    // Shadow the guess variable to change its type to u32.
+    // Annonate the exact type expected.
+    // "trim" removes any extra whitespace in the beginning or the end.
+    // "parse" parses string into some kind of number, here u32.
+    //
+    let guess: u32 = guess.trim().parse()
+        .expect("Nope. Not the right kinda value.");
     // "thread_rng" gives the rand num generator
     // "gen_range" is called on the rand num gen
     // this method is defined by the "Rng" trait
     let hidden_num = rand::thread_rng().gen_range(1, 101);
 
     println!("You guessed: {}", guess);
-    println!("Aaaaaand the hidden number was: {}", hidden_num);
+
+    // "cmp" as the name suggests compares two values
+    // "Ordering" just like "Result" is an enum with variants available
+    // being "Less", "Equal" and "Greater".
+    // "match" decides what to do based on a variant.
+    match guess.cmp(&hidden_num) {
+        Ordering::Less => println!("Move a bit higher?"),
+        Ordering::Equal => println!("Bravo! You guessed it!"),
+        Ordering::Greater => println!("Move a little lower?"),
+    }
+
+    println!("Pssst... I had hidden {} for you.", hidden_num);
 }
