@@ -1,4 +1,7 @@
+extern crate rand;
+
 use std::io;
+use rand::Rng;
 
 fn main() {
     println!("!!!! GUESS KARO GAME !!!!");
@@ -19,5 +22,11 @@ fn main() {
     io::stdin().read_line(&mut guess)
         .expect("Uh-oh! Are you sure you entered the right kind of value?");
 
+    // "thread_rng" gives the rand num generator
+    // "gen_range" is called on the rand num gen
+    // this method is defined by the "Rng" trait
+    let hidden_num = rand::thread_rng().gen_range(1, 101);
+
     println!("You guessed: {}", guess);
+    println!("Aaaaaand the hidden number was: {}", hidden_num);
 }
